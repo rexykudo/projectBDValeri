@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coba.RecordTransactionController">
+   <children>
+      <Label text="Transaction ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></Label>
+      <Label prefHeight="62.0" prefWidth="230.0" text="SPR Coffee" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Segoe UI Semibold" size="42.0" />
+         </font>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </Label>
+      <Label text="Customer / Member_ID" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin></Label>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+         <children>
+            <TableView fx:id="tableView" prefHeight="100.0" prefWidth="1179.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <Label text="Subtotal" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></Label>
+      <Label text="Pajak (11%)" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></Label>
+      <Label text="Total" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></Label>
+      <Label text="Cashier ID" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></Label>
+      <Label fx:id="subtotalText" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Label fx:id="pajakText" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+      <Label text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+      <TextField fx:id="transactionIDField" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <TextField fx:id="memberID" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <TextField GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+      <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Button fx:id="homeButton" mnemonicParsing="false" text="HOME" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+      <CheckBox fx:id="isMember" mnemonicParsing="false" text="Member" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </CheckBox>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints maxWidth="242.4" minWidth="233.4" prefWidth="233.4" />
+      <ColumnConstraints maxWidth="146.6" minWidth="137.6" prefWidth="146.6" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
