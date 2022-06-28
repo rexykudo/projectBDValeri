@@ -3,6 +3,7 @@ package com.example.coba;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,16 +27,25 @@ public class TableController implements Initializable {
     static Integer temp = 0;
 
     @FXML
-    private TableView<Members> ViewTable = new TableView<>();
+    private Button removeButton;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button refreshButton;
 
     @FXML
-    private TableColumn<Members, String> idCol = new TableColumn<>();
+    private TableView<Members> viewTable;
 
     @FXML
-    private TableColumn<Members, String> nameCol = new TableColumn<>();
+    private TableColumn<Members, String> idCol;
 
     @FXML
-    private TableColumn<Members, String> telpCol = new TableColumn<>();
+    private TableColumn<Members, String> nameCol;
+
+    @FXML
+    private TableColumn<Members, String> telpCol;
 
 
     String query = null;
@@ -54,6 +64,54 @@ public class TableController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Parent parent = null;
+                try {
+                    parent = FXMLLoader.load(getClass().getResource("addMember.fxml"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Scene scene = new Scene(parent);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.initStyle(StageStyle.UTILITY);
+                stage.show();
+            }
+        });
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Exit pressed!");
+            }
+        });
+        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Refreshing!");
+                memberList.clear();
+                query = "SELECT * FROM MEMBERS";
+                try {
+                    preparedStatement = connection.prepareStatement(query);
+                    resultSet = preparedStatement.executeQuery();
+               
+                    while (resultSet.next()) {
+                        memberList.add(
+                            new Members(
+                                resultSet.getString("MEMBER_ID"),
+                                resultSet.getString("MEMBER_NAME"),
+                                resultSet.getString("MEMBER_TELP")
+                            )
+                        );
+                    }
+                    if (! resultSet.next()){
+                    } else viewTable.setItems(memberList);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @FXML
@@ -75,31 +133,32 @@ public class TableController implements Initializable {
 
     @FXML
     void Refresh() throws SQLException {
+        System.out.println("Refreshing table values!");
         memberList.clear();
         query = "SELECT * FROM MEMBERS";
         preparedStatement = connection.prepareStatement(query);
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
+            System.out.println("Result: " + resultSet.getString("MEMBER_ID") + " " + resultSet.getString("MEMBER_NAME") + " " + resultSet.getString("MEMBER_TELP"));
             memberList.add(
-                    new Members(
-                            resultSet.getString("MEMBER_ID"),
-                            resultSet.getString("MEMBER_NAME"),
-                            resultSet.getString("MEMBER_TELP")
-                    )
+                new Members(
+                        resultSet.getString("MEMBER_ID"),
+                        resultSet.getString("MEMBER_NAME"),
+                        resultSet.getString("MEMBER_TELP")
+                )
             );
         }
-        if (! resultSet.next()){
-        }else ViewTable.setItems(memberList);
+        viewTable.setItems(memberList);
     }
     @FXML
     void Delete() throws SQLException{
-        if (ViewTable.getSelectionModel().isEmpty()){
+        if (viewTable.getSelectionModel().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Please choose which row to delete");
             alert.showAndWait();
         }else {
-            member = ViewTable.getSelectionModel().getSelectedItem();
+            member = viewTable.getSelectionModel().getSelectedItem();
             query = "DELETE FROM MEMBERS WHERE id = " + member.getId();
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(query);
@@ -109,14 +168,14 @@ public class TableController implements Initializable {
     }
     @FXML
     void Update() throws SQLException {
-        member = ViewTable.getSelectionModel().getSelectedItem();
-        if (ViewTable.getSelectionModel().isEmpty()){
+        member = viewTable.getSelectionModel().getSelectedItem();
+        if (viewTable.getSelectionModel().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Please choose which row to update");
             alert.showAndWait();
         }else {
-            member = ViewTable.getSelectionModel().getSelectedItem();
+            member = viewTable.getSelectionModel().getSelectedItem();
             query = "DELETE FROM MEMBERS WHERE id = " + member.getId();
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(query);
@@ -128,13 +187,15 @@ public class TableController implements Initializable {
     @FXML
     public void loadData() throws SQLException {
         connection = DBUtil.getConnection();
+        System.out.println("Beginning loadData ....");
         Refresh();
-        idCol.setCellValueFactory(new PropertyValueFactory<>("MEMBER_ID"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("MEMBER_NAME"));
-        telpCol.setCellValueFactory(new PropertyValueFactory<>("MEMBER_TELP"));
+        System.out.println("Finished refresh...loading data!");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        telpCol.setCellValueFactory(new PropertyValueFactory<>("notelp"));
 //                        editIcon.setOnMouseClicked((MouseEvent event) -> {
 //
-//                            user = ViewTable.getSelectionModel().getSelectedItem();
+//                            user = viewTable.getSelectionModel().getSelectedItem();
 //                            FXMLLoader loader = new FXMLLoader ();
 //                            loader.setLocation(getClass().getResource("addStudent.fxml"));
 //                            try {
@@ -173,6 +234,6 @@ public class TableController implements Initializable {
 //            return cell;
 //        };
 //        editCol.setCellFactory(cellFoctory);
-//        ViewTable.setItems(userList);
+//        viewTable.setItems(userList);
     }
 }

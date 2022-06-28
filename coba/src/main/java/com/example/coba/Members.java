@@ -1,20 +1,19 @@
 package com.example.coba;
 
 public class Members {
-    String id;
-    String name,notelp;
+    String id, name, notelp;
 
-    public Members(String id,String username, String notelp) {
+    public Members(String id, String name, String notelp) {
         this.id = id;
-        this.name = username;
+        this.name = name;
         this.notelp = notelp;
     }
 
-    public String getUsername() {
+    public String getName() {
         return name;
     }
 
-    public void setUsername(String username) {
+    public void setName(String username) {
         this.name = username;
     }
 

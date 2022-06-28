@@ -16,11 +16,9 @@ public class AddController implements Initializable {
     @FXML
     private TextField idField;
     @FXML
-    private TextField usernameField;
+    private TextField nameField;
     @FXML
-    private TextField passwordField;
-    @FXML
-    private TextField emailField;
+    private TextField telpField;
 
     Connection connection = null;
     PreparedStatement preparedStatement = null;
@@ -33,11 +31,10 @@ public class AddController implements Initializable {
 
     public void submit() throws SQLException {
         connection = DBUtil.getConnection();
-        Integer id = Integer.parseInt(idField.getText());
-        String name = usernameField.getText();
-        String password = passwordField.getText();
-        String email = emailField.getText();
-        if (name.isEmpty() || password.isEmpty() || email.isEmpty() || idField.getText().isEmpty()){
+        String id = idField.getText();
+        String name = nameField.getText();
+        String email = telpField.getText();
+        if (name.isEmpty() || email.isEmpty() || id.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Please fill all the data!!");
@@ -45,22 +42,20 @@ public class AddController implements Initializable {
         }else {
             insert();
             idField.setText(null);
-            usernameField.setText(null);
-            passwordField.setText(null);
-            emailField.setText(null);
-
+            nameField.setText(null);
+            telpField.setText(null);
         }
     }
 
     public String getQuery(){
-        return "INSERT INTO users VALUES(?,?,?,?)";
+        return "INSERT INTO MEMBERS VALUES(?,?,?)";
     }
+
     public void insert() throws SQLException {
         preparedStatement = connection.prepareStatement(getQuery());
-        preparedStatement.setInt(1,Integer.parseInt(idField.getText()));
-        preparedStatement.setString(2,usernameField.getText());
-        preparedStatement.setString(3,passwordField.getText());
-        preparedStatement.setString(4,emailField.getText());
+        preparedStatement.setString(1,idField.getText());
+        preparedStatement.setString(2,nameField.getText());
+        preparedStatement.setString(3,telpField.getText());
         preparedStatement.executeQuery();
     }
 }
